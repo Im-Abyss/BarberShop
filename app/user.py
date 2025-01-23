@@ -6,13 +6,10 @@ from aiogram.fsm.state import StatesGroup, State
 
 from app.database.models import async_session
 from app.database.requests import set_user, update_user, set_reserve, set_admin
+from .admin import admin_menu
 import app.keyboards as kb
 
 router = Router()
-
-
-class Admin(StatesGroup):
-    owner = State()
 
 
 class Reg(StatesGroup):
@@ -38,9 +35,7 @@ async def cmd_start(message: Message, state: FSMContext):
     admin = await set_admin(message.from_user.id)
     
     if admin == 45567547: # 773446765 - админ
-        await message.answer(f'Здравствуйте, {admin.name}!')
-        await message.answer('Вот список ваших клиентов.', reply_markup=await kb.clients())
-        await state.set_state(Admin.owner)
+        await admin_menu(message, state, admin=admin)
     elif user:
         await message.answer(f'Доброго времени суток, {user.name}!', reply_markup=kb.main)
         await state.clear()
