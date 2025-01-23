@@ -5,10 +5,14 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 
 from app.database.models import async_session
-from app.database.requests import set_user, update_user, set_reserve
+from app.database.requests import set_user, update_user, set_reserve, set_admin
 import app.keyboards as kb
 
 router = Router()
+
+
+class Admin(StatesGroup):
+    owner = State()
 
 
 class Reg(StatesGroup):
@@ -21,16 +25,28 @@ class Reserve(StatesGroup):
     service = State()
 
 
+
 @router.message(CommandStart())
 async def cmd_start(message: Message, state: FSMContext):
+    # Проверяем, находится ли пользователь в процессе регистрации
+    current_state = await state.get_state()
+    if current_state in [Reg.name, Reg.contact]:
+        await message.answer("Вы уже проходите регистрацию. Пожалуйста, завершите ввод данных.")
+        return
+
     user = await set_user(message.from_user.id)
-    if user:
+    admin = await set_admin(message.from_user.id)
+    
+    if admin.tg_id == 45567547: # 773446765 - админ
+        await message.answer(f'Здравствуйте, {admin.name}!')
+        await message.answer('Вот список ваших клиентов.', reply_markup=await kb.clients())
+        await state.set_state(Admin.owner)
+    elif user:
         await message.answer(f'Доброго времени суток, {user.name}!', reply_markup=kb.main)
         await state.clear()
     else:
-        await message.answer('Добро пожаловать! Пожалуйста пройдите регистрацию.\n\nВведите Ваше имя.')
+        await message.answer('Добро пожаловать! Пожалуйста, пройдите регистрацию.\n\nВведите Ваше имя.')
         await state.set_state(Reg.name)
-
 
 
 @router.message(Reg.name)

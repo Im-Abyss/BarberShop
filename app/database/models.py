@@ -40,9 +40,17 @@ class Reserve(Base):
     __tablename__ = 'reservations'
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    user: Mapped[int] = mapped_column(ForeignKey('users.id'))
-    barber: Mapped[int] = mapped_column(ForeignKey('barbers.id'))
-    service: Mapped[int] = mapped_column(ForeignKey('services.id'))
+    user_name: Mapped[str] = mapped_column(String(20))
+    barber_name: Mapped[str] = mapped_column(String(20))
+    service_name: Mapped[str] = mapped_column(String(20))
+
+
+class Adminnistrator(Base):
+    __tablename__ = 'admins'
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    tg_id = mapped_column(BigInteger)
+    name: Mapped[str] = mapped_column(String(20))
 
 
 async def async_main():
