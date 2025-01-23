@@ -37,7 +37,7 @@ async def cmd_start(message: Message, state: FSMContext):
     user = await set_user(message.from_user.id)
     admin = await set_admin(message.from_user.id)
     
-    if admin.tg_id == 45567547: # 773446765 - админ
+    if admin == 45567547: # 773446765 - админ
         await message.answer(f'Здравствуйте, {admin.name}!')
         await message.answer('Вот список ваших клиентов.', reply_markup=await kb.clients())
         await state.set_state(Admin.owner)
