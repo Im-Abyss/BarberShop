@@ -12,10 +12,10 @@ def connection(func):
 
 @connection
 async def set_user(session, tg_id):
-    user = await session.scalar(select(User).where(User.tg_id == tg_id))
+    user = await session.scalar(select(User.tg_id).where(User.tg_id == tg_id))
 
     if not user:
-        session.add(User(tg_id=tg_id, name="", phone_number=""))  # пустые строки вместо None
+        session.add(User(tg_id=tg_id, name="", phone_number=""))
         await session.commit()
         return False
     else:
@@ -24,8 +24,22 @@ async def set_user(session, tg_id):
 
 @connection
 async def set_admin(session, tg_id):
-    admin = await session.scalar(select(Adminnistrator).where(Adminnistrator.tg_id == tg_id))
-    return admin
+    admin = await session.scalar(select(Adminnistrator.tg_id).where(Adminnistrator.tg_id == tg_id))
+    
+    if not admin:
+        return False
+    else:
+        return admin
+    
+
+@connection
+async def only_admin_name(session, tg_id):
+    admin_name = await session.scalar(select(Adminnistrator.name).where(Adminnistrator.tg_id == tg_id))
+    
+    if not admin_name:
+        return False
+    else:
+        return admin_name
 
 
 @connection

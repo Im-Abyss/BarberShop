@@ -31,17 +31,20 @@ async def cmd_start(message: Message, state: FSMContext):
         await message.answer("Вы уже проходите регистрацию. Пожалуйста, завершите ввод данных.")
         return
 
-    user = await set_user(message.from_user.id)
     admin = await set_admin(message.from_user.id)
     
-    if admin == 45567547: # 773446765 - админ
-        await admin_menu(message, state, admin=admin)
-    elif user:
-        await message.answer(f'Доброго времени суток, {user.name}!', reply_markup=kb.main)
-        await state.clear()
+    if admin: # 773446765 - админ
+        await admin_menu(message)
     else:
-        await message.answer('Добро пожаловать! Пожалуйста, пройдите регистрацию.\n\nВведите Ваше имя.')
-        await state.set_state(Reg.name)
+
+        user = await set_user(message.from_user.id)
+
+        if user:
+            await message.answer(f'Доброго времени суток, {user.name}!', reply_markup=kb.main)
+            await state.clear()
+        else:
+            await message.answer('Добро пожаловать! Пожалуйста, пройдите регистрацию.\n\nВведите Ваше имя.')
+            await state.set_state(Reg.name)
 
 
 @router.message(Reg.name)
