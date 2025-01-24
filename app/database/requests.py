@@ -1,5 +1,5 @@
 from app.database.models import async_session
-from app.database.models import User, Barber, Service, Reserve, Adminnistrator
+from app.database.models import User, Barber, Service, Reserve, Manager
 from sqlalchemy import select, update
 
 
@@ -12,7 +12,7 @@ def connection(func):
 
 @connection
 async def set_user(session, tg_id):
-    user = await session.scalar(select(User.tg_id).where(User.tg_id == tg_id))
+    user = await session.scalar(select(User).where(User.tg_id == tg_id))
 
     if not user:
         session.add(User(tg_id=tg_id, name="", phone_number=""))
@@ -24,22 +24,12 @@ async def set_user(session, tg_id):
 
 @connection
 async def set_admin(session, tg_id):
-    admin = await session.scalar(select(Adminnistrator.tg_id).where(Adminnistrator.tg_id == tg_id))
+    admin = await session.scalar(select(Manager).where(Manager.tg_id == tg_id))
     
     if not admin:
         return False
     else:
         return admin
-    
-
-@connection
-async def only_admin_name(session, tg_id):
-    admin_name = await session.scalar(select(Adminnistrator.name).where(Adminnistrator.tg_id == tg_id))
-    
-    if not admin_name:
-        return False
-    else:
-        return admin_name
 
 
 @connection
@@ -59,12 +49,12 @@ async def get_services(session):
 
 
 @connection
-async def get_clients(session):
+async def get_reserve(session):
     return await session.scalars(select(User))
 
 
 @connection
 async def set_reserve(session, tg_id, barber, service):
     user = await session.scalar(select(User).where(User.tg_id == tg_id))
-    session.add(Reserve(user_name=user.id, service_name=service, barber_name=barber))
+    session.add(Reserve(user_name=user.name, barber_name=barber, service_name=service))
     await session.commit()

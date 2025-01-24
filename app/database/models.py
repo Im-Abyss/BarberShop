@@ -45,7 +45,7 @@ class Reserve(Base):
     service_name: Mapped[str] = mapped_column(String(20))
 
 
-class Adminnistrator(Base):
+class Manager(Base):
     __tablename__ = 'admins'
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
