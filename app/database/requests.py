@@ -50,7 +50,7 @@ async def get_services(session):
 
 @connection
 async def get_reserve(session):
-    return await session.scalars(select(User))
+    return await session.scalars(select(Reserve))
 
 
 @connection
