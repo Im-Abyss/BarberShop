@@ -41,6 +41,7 @@ class Reserve(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     user_name: Mapped[str] = mapped_column(String(20))
+    user_number: Mapped[str] = mapped_column(String(20), nullable=True)
     barber_name: Mapped[str] = mapped_column(String(20))
     service_name: Mapped[str] = mapped_column(String(20))
 

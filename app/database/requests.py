@@ -56,5 +56,5 @@ async def get_reserve(session):
 @connection
 async def set_reserve(session, tg_id, barber, service):
     user = await session.scalar(select(User).where(User.tg_id == tg_id))
-    session.add(Reserve(user_name=user.name, barber_name=barber, service_name=service))
+    session.add(Reserve(user_name=user.name, user_number=user.phone_number, barber_name=barber, service_name=service))
     await session.commit()
