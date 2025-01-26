@@ -33,7 +33,7 @@ async def cmd_start(message: Message, state: FSMContext):
 
     admin = await set_admin(message.from_user.id)
     
-    if admin.tg_id: # 773446765 - админ
+    if admin.tg_id:
         await admin_menu(message)
     else:
 
