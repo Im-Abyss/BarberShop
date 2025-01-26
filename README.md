@@ -3,7 +3,7 @@
 Функционал для клиента:
 
   Регистрация, выбор барбера и услуги:
-  ![image](https://github.com/user-attachments/assets/a94be303-10e7-48a1-9b97-744f33546e56)
+  ![image](https://github.com/user-attachments/assets/526c8155-10b9-4822-a53e-2bb58e617cab)
 
 Функционал для менеджера:
 
