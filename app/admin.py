@@ -20,8 +20,5 @@ async def admin_menu(message: Message):
 
     # Формируем текст для всех записей
     for reserve in all_reserve:
-        message_text = (f'''Имя клиента: {reserve.user_name}
-\nНомер клиента: {reserve.user_number}
-\nИмя барбера: {reserve.barber_name}
-\nУслуга: {reserve.service_name}''')
+        message_text = (f'''Имя клиента: {reserve.user_name}, Номер клиента: {reserve.user_number}, Имя барбера: {reserve.barber_name}, Услуга: {reserve.service_name}\n''')
         await message.answer(message_text)
