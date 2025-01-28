@@ -1,4 +1,7 @@
 __pycache__/
+.venv/
+.vscode/
+.idea/
 
 config.py
 db.sqlite3
